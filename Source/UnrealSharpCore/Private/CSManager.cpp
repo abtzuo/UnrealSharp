@@ -514,6 +514,7 @@ UCSManagedAssembly* UCSManager::FindOwningAssemblySlow(UField *Field)
 
 FGCHandle UCSManager::FindManagedObject(const UObject* Object)
 {
+	FScopeLock Lock(&ManagedObjectCriticalSection);
 	TRACE_CPUPROFILER_EVENT_SCOPE(UCSManager::FindManagedObject);
 
 	if (!IsValid(Object))

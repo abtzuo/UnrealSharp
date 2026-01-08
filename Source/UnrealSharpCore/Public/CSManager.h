@@ -195,6 +195,7 @@ private:
 
 	// Handles to all active UObjects that has a C# counterpart. The key is the unique ID of the UObject.
 	TMap<uint32, TSharedPtr<FGCHandle>> ManagedObjectHandles;
+	FCriticalSection ManagedObjectCriticalSection;
 
 	// Handles all active UObjects that have interface wrappers in C#. The primary key is the unique ID of the UObject.
 	// The second key is the unique ID of the interface class.
