@@ -41,16 +41,7 @@ public struct TSubclassOf<T>
             
             if (classType == typeof(T) || classType.IsSubclassOf(typeof(T)) || typeof(T).IsAssignableFrom(classType))
             {
-                string typeName = classType.GetEngineName();
-                NativeClass = UCoreUObjectExporter.CallGetType(classType.GetAssemblyName(), classType.Namespace, typeName);
-                
-                #if WITH_EDITOR
-                IntPtr skeletonClass = UCoreUObjectExporter.CallGetGeneratedClassFromSkeleton(NativeClass);
-                if (skeletonClass != IntPtr.Zero)
-                {
-                    NativeClass = skeletonClass;
-                }
-                #endif
+                NativeClass = UObject.GetNativeClass(classType);
             }
             else
             {

@@ -31,12 +31,12 @@ public readonly struct TWeakObjectPtr<T> : IEquatable<TWeakObjectPtr<T>> where T
         FWeakObjectPtrExporter.CallSetObject(ref Data, obj?.NativeObject ?? IntPtr.Zero);
     }
 
-    internal TWeakObjectPtr(IntPtr nativePtr)
+    public TWeakObjectPtr(IntPtr nativePtr)
     {
         FWeakObjectPtrExporter.CallSetObject(ref Data, nativePtr);
     }
     
-    internal TWeakObjectPtr(WeakObjectData data)
+    public TWeakObjectPtr(WeakObjectData data)
     {
         Data = data;
     }

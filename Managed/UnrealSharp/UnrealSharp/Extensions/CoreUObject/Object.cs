@@ -174,6 +174,36 @@ public partial class UObject
         IntPtr handle = UObjectExporter.CallCreateNewObject(outer.NativeObject, classType.NativeClass, nativeTemplate);
         return GCHandleUtilities.GetObjectFromHandlePtr<T>(handle)!;
     }
+    
+    internal static IntPtr GetNativeClass(Type classType)
+    {
+        var typeName = classType.GetEngineName();
+        var nativeClass = UCoreUObjectExporter.CallGetType(classType.GetAssemblyName(), classType.Namespace, typeName);
+
+#if WITH_EDITOR
+        var skeletonClass = UCoreUObjectExporter.CallGetGeneratedClassFromSkeleton(nativeClass);
+        if (skeletonClass != IntPtr.Zero)
+        {
+            nativeClass = skeletonClass;
+        }
+#endif
+        return nativeClass;
+    }
+
+    public static UObject? NewObject(Type type, UObject? outer = null, UObject? template = null)
+    {
+        var nativeClass = GetNativeClass(type);
+
+        var nativeTemplate = template?.NativeObject ?? IntPtr.Zero;
+
+        if (outer == null || outer.NativeObject == IntPtr.Zero)
+        {
+            outer = GetTransientPackage();
+        }
+
+        var handle = UObjectExporter.CallCreateNewObject(outer.NativeObject, nativeClass, nativeTemplate);
+        return GCHandleUtilities.GetObjectFromHandlePtr<UObject>(handle);
+    }
 
     /// <summary>
     /// Gets the transient package.
