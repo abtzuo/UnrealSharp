@@ -19,7 +19,7 @@ public class BoolPropertyTranslator : SimpleTypePropertyTranslator
 
     public override void ExportPropertyStaticConstructor(GeneratorStringBuilder builder, UhtProperty property, string nativePropertyName)
     {
-        if (property.IsBitfield && !property.HasGetterSetterPair())
+        if (property.IsBitfield && !property.HasBlueprintGetterSetterPair())
         {
             builder.AppendLine($"{GetFieldMaskFieldName(nativePropertyName)} = CallGetBoolPropertyFieldMaskFromName(NativeClassPtr, \"{nativePropertyName}\");");
         }
@@ -37,13 +37,12 @@ public class BoolPropertyTranslator : SimpleTypePropertyTranslator
         base.ExportPropertyVariables(builder, property, propertyEngineName);
     }
     
-    public override void ExportToNative(
-        GeneratorStringBuilder builder, 
-        UhtProperty property, 
-        string propertyName, 
+    public override void ExportToNative(GeneratorStringBuilder builder,
+        UhtProperty property,
+        string propertyName,
         string destinationBuffer,
-        string offset, 
-        string source)
+        string offset,
+        string source, bool reuseRefMarshallers)
     {
         if (property.IsBitfield)
         {
@@ -51,7 +50,7 @@ public class BoolPropertyTranslator : SimpleTypePropertyTranslator
             return;
         }
         
-        base.ExportToNative(builder, property, propertyName, destinationBuffer, offset, source);
+        base.ExportToNative(builder, property, propertyName, destinationBuffer, offset, source, false);
     }
 
     public override void ExportFromNative(GeneratorStringBuilder builder,
