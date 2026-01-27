@@ -1,10 +1,13 @@
 <Project>
+  <!-- Import NativeAOT configuration first -->
+  <Import Project="$(MSBuildThisFileDirectory)UnrealSharp.AOT.props" />
+
   <PropertyGroup>
     <TargetFramework>net9.0</TargetFramework>
     <SolutionDir Condition="'$(SolutionDir)' == ''">$(MSBuildThisFileDirectory)..\..\</SolutionDir>
     <UnrealSharpPluginDir>$(MSBuildThisFileDirectory)</UnrealSharpPluginDir>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    <EnableDynamicLoading>true</EnableDynamicLoading>
+    <EnableDynamicLoading Condition="'$(AOT_BUILD)' != 'true'">true</EnableDynamicLoading>
     <LangVersion>latest</LangVersion>
 
     <DefineConstants>WITH_EDITOR</DefineConstants>
@@ -13,6 +16,9 @@
     </DefineConstants>
     <DefineConstants Condition="'$(DefineAdditionalConstants)' != ''">
       $(DefineConstants);$(DefineAdditionalConstants)
+    </DefineConstants>
+    <DefineConstants Condition="'$(AOT_BUILD)' == 'true'">
+      $(DefineConstants);NATIVE_AOT
     </DefineConstants>
   </PropertyGroup>
 
