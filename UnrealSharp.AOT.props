@@ -1,41 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<Project Sdk="Microsoft.NET.Sdk">
+<Project>
 
-  <PropertyGroup Condition="'$(AOT_BUILD)' == 'true'">
-    <!-- 基本设置 -->
-    <TargetFramework>net8.0</TargetFramework>
+  <PropertyGroup Condition="'$(AOT_BUILD)' == 'true' AND $(MSBuildProjectName.EndsWith('Editor'))">
+    <ExcludeFromBuild>true</ExcludeFromBuild>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(AOT_BUILD)' == 'true' AND !$(MSBuildProjectName.EndsWith('Editor'))">
     <OutputType>Library</OutputType>
     <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
-    
-    <!-- NativeAOT 核心配置 -->
+
     <PublishAot>true</PublishAot>
-    
-    <!-- 生成静态库而非动态库 -->
     <NativeLib>Static</NativeLib>
-    
-    <!-- 平台配置 (根据目标平台选择) -->
-    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
-    <!-- 或 linux-x64, osx-x64, osx-arm64 等 -->
-    
-    <!-- 优化选项 -->
+
     <OptimizationPreference>Speed</OptimizationPreference>
     <IlcOptimizationPreference>Speed</IlcOptimizationPreference>
-    
-    <!-- 减小体积的选项 -->
+
     <InvariantGlobalization>true</InvariantGlobalization>
     <StackTraceSupport>false</StackTraceSupport>
     <UseSystemResourceKeys>true</UseSystemResourceKeys>
-    
-    <!-- 禁用不需要的功能 -->
+
     <EventSourceSupport>false</EventSourceSupport>
     <MetadataUpdaterSupport>false</MetadataUpdaterSupport>
     <EnableUnsafeBinaryFormatterSerialization>false</EnableUnsafeBinaryFormatterSerialization>
   </PropertyGroup>
 
-  <!-- 导出头文件生成 (可选但推荐) -->
+  <!--
   <ItemGroup>
     <PackageReference Include="DNNE" Version="2.*" />
   </ItemGroup>
+  -->
 
 </Project>
 
