@@ -99,18 +99,13 @@ public partial class UObject
     /// <inheritdoc />
     public override bool Equals(object? obj)
     {
-        return obj is UObject unrealSharpObject && NativeObject == unrealSharpObject.NativeObject;
+        return obj is UObject other && NativeObject == other.NativeObject;
     }
 
     /// <inheritdoc />
     public override int GetHashCode()
     {
-        return NativeObject.GetHashCode();
-    }
-
-    public static implicit operator bool(UObject Object)
-    {
-        return Object != null && UObjectExporter.CallNativeIsValid(Object.NativeObject).ToManagedBool();
+        return UniqueID;
     }
 
     /// <summary>
@@ -684,6 +679,21 @@ public partial class UObject
     public T GetWorldSettingsAs<T>() where T : AWorldSettings
     {
         return (T) WorldSettings;
+    }
+    
+    public static implicit operator bool(UObject? @object)
+    {
+        return @object != null;
+    }
+    
+    public static bool operator ==(UObject? left, UObject? right)
+    {
+        return ReferenceEquals(left, right);
+    }
+
+    public static bool operator !=(UObject? left, UObject? right)
+    {
+        return !(left == right);
     }
 }
 
