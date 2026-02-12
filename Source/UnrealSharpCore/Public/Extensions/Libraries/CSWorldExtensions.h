@@ -27,7 +27,7 @@ UENUM(BlueprintType)
 enum class ECSWorldType : uint8
 {
 	/** An untyped world, in most cases this will be the vestigial worlds of streamed in sub-levels */
-	WorldNone = EWorldType::None,
+	None = EWorldType::None,
 
 	/** The game world */
 	Game = EWorldType::Game,
